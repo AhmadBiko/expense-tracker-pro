@@ -84,7 +84,7 @@ source .venv/bin/activate
 ### 3. Install Dependencies
 
 ```bash
-pip install streamlit plotly
+python -m pip install -r requirements.txt
 ```
 
 ### 4. Run the Web Application
@@ -125,6 +125,10 @@ expense-tracker-pro/
 ├── main.py
 ├── expense_functions.py
 ├── test_expense_tracker.py
+├── requirements.txt
+├── screenshots/
+│   ├── dashboard.png
+│   └── spending-history.png
 ├── .gitignore
 └── README.md
 ```
@@ -148,15 +152,17 @@ The application stores expense and budget data in local JSON files. These files 
 - [x] Add monthly spending history
 - [x] Add dates and chronological expense sorting
 - [x] Add dashboard screenshots
-- [ ] Test installation in a clean environment
+- [x] Test installation in a clean environment
 - [ ] Explore SQLite database integration
 - [ ] Deploy the web application
 
 ## 📌 Project Status
 
-**Web dashboard implemented — preparing v1.0 release.**
+**Version 1.0.0 — release-ready.**
 
-The application is functional locally and has passed its current automated test suite. Final installation verification and release documentation are the next steps.
+The application has passed all 21 automated tests, and its dependencies and dashboard were verified in a fresh virtual environment. The project is ready for its first GitHub release.
+
+[View releases](https://github.com/AhmadBiko/expense-tracker-pro/releases)
 
 ## 👨‍💻 Author
 
