@@ -9,10 +9,10 @@ The project started as a Python command-line application and has evolved into a 
 ## 📸 Dashboard Preview
 
 ### Main Dashboard
-![Expense Tracker Pro Dashboard](screenshots/dashboard.png)
+![Expense Tracker Pro Dashboard](./screenshots/dashboard.png)
 
 ### Monthly Spending History
-![Monthly Spending History](screenshots/spending-history.png)
+![Monthly Spending History](./screenshots/spending-history.png)
 
 ## ✨ Features
 
