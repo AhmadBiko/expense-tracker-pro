@@ -1,14 +1,17 @@
-#[1] importing the needed functions
+#[1] Importing the needed functions
 import unittest
+from datetime import date, timedelta
 from expense_functions import (
     add_expense,
     calculate_total,
     calculate_category_total,
     find_most_expensive,
-    delete_expense
+    delete_expense,
+    calculate_monthly_total,
+    calculate_spending_by_month
 )
 
-#[2] starting our tests
+#[2] Starting our tests
 class TestExpenseFunctions(unittest.TestCase):
 
     def setUp(self):
@@ -27,6 +30,11 @@ class TestExpenseFunctions(unittest.TestCase):
         self.assertEqual(expenses[0]["category"], 'Food')
         self.assertEqual(expenses[0]["amount"], 25.50)
         self.assertEqual(expenses[0]["description"], 'Groceries')
+
+    def test_add_expense_date(self):
+        expenses = []
+        add_expense(expenses, 'Food', 25.50, 'Groceries')
+        self.assertEqual(expenses[0]["date"], date.today().isoformat())
 
     def test_add_expense_negative_amount(self):
         expenses = []
@@ -120,7 +128,6 @@ class TestExpenseFunctions(unittest.TestCase):
         self.assertEqual(self.expenses[0]["category"], 'Transport')
         self.assertEqual(result, "Expense deleted successfully!\n")
         
-
     def test_delete_only_expense(self):
         expenses =[ {"category": "Food", "amount": 25.50, "description": "Groceries"} ]
         delete_expense(expenses, 1)
@@ -154,6 +161,39 @@ class TestExpenseFunctions(unittest.TestCase):
         delete_expense(self.expenses, 2)
         self.assertEqual(len(self.expenses), 1)
         self.assertEqual(self.expenses[0]["category"], 'Food')
+
+    def test_expense_monthly_total(self):
+        today = date.today().isoformat()
+        first_day = date.today().replace(day = 1)
+        last_month = first_day - timedelta(days = 1)
+        previous_month = last_month.isoformat()[:7]
+        expenses = [
+        {"category":'Food', "amount":25.50, "description":'Groceries', "date":today},
+        {"category":'Food', "amount":4.50, "description":'Coffee', "date":today},
+        {"category":'Transport', "amount":15.00, "description":'Tram', "date":previous_month},
+        {"category":'Restaurant', "amount":30.00, "description":'Döner', "date":today},
+        {"category":'Shopping', "amount":50.00, "description":'Jacket'}
+        ]
+        total = calculate_monthly_total(expenses)
+        self.assertEqual(total, 60)
+
+    def test_calculate_spending_by_month(self):
+        expenses = [
+            {"amount":20.00, "date":"2026-08-10"},
+            {"amount":35.00, "date":"2026-08-25"},
+            {"amount":50.00, "date":"2026-09-05"},
+            {"amount":15.00, "date":"2026-09-18"},
+            {"amount":40.00, "date":"2026-10-12"},
+            {"amount":100.00},
+            ]
+        expected = {
+            "2026-08": 55,
+            "2026-09": 65,
+            "2026-10": 40
+        }
+        monthly_list = calculate_spending_by_month(expenses)
+        self.assertEqual(monthly_list, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

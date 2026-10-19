@@ -1,4 +1,6 @@
+.venv/
 __pycache__/
 *.pyc
 expenses.json
-.venv/
+budget.json
+.streamlit/secrets.toml

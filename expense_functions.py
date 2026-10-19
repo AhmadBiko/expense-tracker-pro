@@ -1,32 +1,34 @@
 import json
+from datetime import date
 
-#[1] creating add function
+#[1] Creating add function
 def add_expense(expenses, category, amount, description):
     # making sure that only valid data goes to the process
     if isinstance(amount, bool):
-        raise TypeError('amount must be a number !')
+        raise TypeError('Amount must be a number !')
     if not isinstance(amount, (float, int)):
-        raise TypeError('amount must be a number !')
+        raise TypeError('Amount must be a number !')
     elif amount <= 0:
-        raise ValueError('amount must be positive !')
+        raise ValueError('Amount must be positive !')
     if not category.strip():
-        raise ValueError('category can\'t be empty !')
+        raise ValueError('Category can\'t be empty !')
     if not description.strip():
-        raise ValueError('description can\'t be empty !')
+        raise ValueError('Description can\'t be empty !')
     data = {}
     data["category"] = category.strip()
     data["amount"] = amount
     data["description"] = description.strip()
+    data["date"] = date.today().isoformat()
     expenses.append(data)
 
-#[2] creating sum function
+#[2] Creating sum function
 def calculate_total(expenses):
     total = 0
     for expense in expenses:
         total += expense["amount"]
     return total
 
-#[3] creating specific sum function
+#[3] Creating specific sum function
 def calculate_category_total(expenses, category):
     is_found = False
     total  = 0 
@@ -39,7 +41,7 @@ def calculate_category_total(expenses, category):
     else:
         return 0
 
-#[4] creating most expensive function
+#[4] Creating most expensive function
 def find_most_expensive(expenses):
     if not expenses:
         return None
@@ -51,7 +53,7 @@ def find_most_expensive(expenses):
             most_expensive_expense = expense
     return most_expensive_expense
 
-#[5] creating delete function
+#[5] Creating delete function
 def delete_expense(expenses, selection):
     if isinstance(selection, bool):
         raise TypeError(f'Invalid selection. Please choose a number between 1 and {len(expenses)}\n')
@@ -62,12 +64,12 @@ def delete_expense(expenses, selection):
     expenses.pop(selection - 1)
     return 'Expense deleted successfully!\n' 
 
-#[6] creating saving data function
+#[6] Creating saving data function
 def save_expenses(expenses):
     with open("expenses.json", "w") as file:
         json.dump(expenses, file)
 
-#[7] creating loading data function
+#[7] Creating loading data function
 def load_expenses():
     try:
         with open("expenses.json", "r") as file:
@@ -77,3 +79,41 @@ def load_expenses():
     except json.JSONDecodeError:
         print('Error: expenses.json contains invalid JSON. Your data has not been modified.') 
         raise
+
+#[8] Creating saving budget function
+def save_budget(budget):
+    with open("budget.json", "w") as file:
+        json.dump({"budget": budget}, file)
+
+#[9] Creating loading budget function
+def load_budget():
+    try:
+        with open("budget.json", "r") as file:
+            data = json.load(file)
+            return data["budget"]
+    except FileNotFoundError:
+        return 300.0
+    except json.JSONDecodeError:
+        print('Error: budget.json contains invalid JSON. Your data has not been modified.')
+        raise
+
+#[10] Creating monthly total function
+def calculate_monthly_total(expenses):
+    current_month = date.today().isoformat()[:7]
+    total = 0
+    for expense in expenses:
+        if expense.get("date", "")[:7] == current_month :
+            total += expense["amount"]
+    return total
+
+#[11] Creating spent per month function
+def calculate_spending_by_month(expenses):
+    monthly_list = {}
+    for expense in expenses:
+        if "date" in expense:
+            month = expense["date"][:7]
+            if month in monthly_list:
+                monthly_list[month] += expense["amount"]
+            else:
+                monthly_list[month] = expense["amount"]
+    return monthly_list

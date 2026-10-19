@@ -1,4 +1,4 @@
-#[1] importing the needed functions
+#[1] Importing the needed functions
 import json
 import time
 import sys
@@ -12,7 +12,7 @@ from expense_functions import (
     load_expenses
 )
 
-#[2] loading the data 
+#[2] Loading the data
 try:
     expenses = load_expenses()
     time.sleep(0.5)
@@ -29,7 +29,7 @@ except json.JSONDecodeError:
     
     
 
-#[3] creating my main menu
+#[3] Creating my main menu
 app = '===== Expense Tracker Pro =====\n'
 main_menu = '1. Add expense\n'
 main_menu += '2. Show all expenses\n'
@@ -39,7 +39,7 @@ main_menu += '5. Show most expensive expense\n'
 main_menu += '6. Delete an expense\n'
 main_menu += '7. Exit\n'
 
-#[4] starting the app
+#[4] Starting the app
 print("Ready! 🚀\n")
 print(app)
 while True:
@@ -61,7 +61,7 @@ while True:
             try:
                 add_expense(expenses, category, amount, description)
             except ValueError:
-                print('please give a name for your category and description and a positive number !\n')
+                print('Please give a name for your category and description and a positive number !\n')
             except TypeError:
                 print('Please enter a number !\n')
             else:
