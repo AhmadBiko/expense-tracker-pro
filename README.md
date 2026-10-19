@@ -6,6 +6,14 @@ Expense Tracker Pro helps users record expenses, visualize spending habits, mana
 
 The project started as a Python command-line application and has evolved into a web-based dashboard. It was developed as a hands-on learning project to practice Python programming, data handling, testing, and web application development.
 
+## 📸 Dashboard Preview
+
+### Main Dashboard
+![Expense Tracker Pro Dashboard](screenshots/dashboard.png)
+
+### Monthly Spending History
+![Monthly Spending History](screenshots/spending-history.png)
+
 ## ✨ Features
 
 ### Interactive Dashboard
@@ -139,7 +147,7 @@ The application stores expense and budget data in local JSON files. These files 
 - [x] Add monthly budget tracking
 - [x] Add monthly spending history
 - [x] Add dates and chronological expense sorting
-- [ ] Add dashboard screenshots
+- [x] Add dashboard screenshots
 - [ ] Test installation in a clean environment
 - [ ] Explore SQLite database integration
 - [ ] Deploy the web application
