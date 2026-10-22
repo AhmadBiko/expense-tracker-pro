@@ -9,7 +9,8 @@ from database import (
     delete_expense_db,
     get_monthly_budget,
     save_monthly_budget,
-    get_monthly_spending
+    get_monthly_spending,
+    get_or_create_user
 )
 from expense_functions import (
     calculate_total,
@@ -22,6 +23,23 @@ from expense_functions import (
 st.set_page_config(
     layout="wide"
 )
+
+if not st.user.is_logged_in:
+    st.title("🔐 Expense Tracker Pro")
+    st.write("Please log in to access your expense dashboard.")
+
+    if st.button("Login with Google"):
+        st.login("google")
+
+    st.stop()
+
+user_id = get_or_create_user(
+    "google",
+    st.user.sub,
+    st.user.get("email")
+)
+if st.button("Logout"):
+    st.logout()
 
 #[3] Designing the app with CSS
 st.markdown("""
@@ -183,7 +201,7 @@ with st.container(key = 'header_card'):
 
 #[5] Loading the data
 try:
-    expenses = get_expenses()
+    expenses = get_expenses(user_id)
 except Exception as error:
     st.error(f"Database error: {error}")
     st.stop()
@@ -195,7 +213,7 @@ with col1:
     with st.container(key = 'total_spending_card'):
         st.markdown('<p><span style="color: #94A3B8;">Total Spending</span></p>',
             unsafe_allow_html = True)
-        st.subheader(f'€{get_total_spending_db():.2f}')
+        st.subheader(f'€{get_total_spending_db(user_id):.2f}')
 
 with col2:
     with st.container(key = 'expense_count_card'):
@@ -228,7 +246,7 @@ with col4:
         if st.button('Add Expense'):
             if amount > 0 and description.strip():
                 today = date.today()
-                add_expense_db(category, amount, description, today)
+                add_expense_db(user_id, category, amount, description, today)
                 st.success('Expense added successfully!')
                 st.rerun()
             else:
@@ -240,13 +258,13 @@ with col4:
         with col7:
             save_clicked = st.button("Save", key="save_budget")
         current_month = date.today().strftime("%Y-%m")
-        saved_budget = get_monthly_budget(current_month)
+        saved_budget = get_monthly_budget(user_id, current_month)
         if saved_budget is None:
             saved_budget = 100
         budget = st.number_input('Monthly budget (€)', min_value = 1.0, value = float(saved_budget),  step = 10.0)
-        spent = float(get_monthly_spending(current_month))
+        spent = float(get_monthly_spending(user_id, current_month))
         if save_clicked:
-            save_monthly_budget(current_month, budget)
+            save_monthly_budget(user_id, current_month, budget)
             st.rerun()
         remaining = budget - spent
         progress = spent / budget
@@ -275,7 +293,7 @@ with col5:
             )
             if st.button('Delete Expense'):
                     expense_id = expenses[selected_index]["id"]
-                    deleted = delete_expense_db(expense_id)
+                    deleted = delete_expense_db(user_id, expense_id)
                     if deleted:
                         st.success('Expense deleted successfully!')
                         st.rerun()
