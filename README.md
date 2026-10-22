@@ -1,10 +1,28 @@
 # 💰 Expense Tracker Pro
 
-A personal expense tracking application built with **Python, Streamlit, and Plotly**.
+A personal expense tracking project built with **Python, Streamlit, and Plotly**, now available in two versions.
 
 Expense Tracker Pro helps users record expenses, visualize spending habits, manage a monthly budget, and explore their spending history through an interactive dashboard.
 
-**🌐 [Try the Live Demo](https://expense-tracker-pro-2026.streamlit.app/)**
+## 🌐 Live Applications
+
+| Version | Try it | Source code |
+| --- | --- | --- |
+| **V1 — JSON / temporary-data demo** | [Launch V1](https://expense-tracker-pro-2026.streamlit.app/) | [`main` branch](https://github.com/AhmadBiko/expense-tracker-pro/tree/main) |
+| **V2 — Google login + PostgreSQL** | [Launch V2](https://expense-tracker-pro-v2.streamlit.app/) | [`feature/postgresql` branch](https://github.com/AhmadBiko/expense-tracker-pro/tree/feature/postgresql) |
+
+> This `main` branch contains **V1**. The multi-user **V2** application, including `db_app.py` and `database.py`, lives on the `feature/postgresql` branch.
+
+### What's new in V2?
+
+- Google OAuth sign-in and sign-out
+- Persistent Neon PostgreSQL storage via Psycopg 3
+- User-specific expenses and monthly budgets
+- Interactive spending charts and cloud deployment
+
+[Read the full V2 documentation](https://github.com/AhmadBiko/expense-tracker-pro/blob/feature/postgresql/README.md)
+
+**🌐 [Try the V1 Live Demo](https://expense-tracker-pro-2026.streamlit.app/)**
 
 The public demo runs with temporary, session-specific data. Expenses and budgets are not permanently stored; use the local application for JSON persistence.
 
@@ -169,11 +187,11 @@ The original application stores expense and budget data in local JSON files. The
 - [x] Test installation in a clean environment
 - [ ] Explore SQLite database integration
 - [x] Deploy a public session-based web demo
-- [ ] Add persistent, private multi-user storage and authentication
+- [x] Add persistent, private multi-user storage and authentication (available on the `feature/postgresql` branch)
 
 ## 📌 Project Status
 
-**Version 1.0.0 — released. Public demo deployed.**
+**V1 — released on `main`. V2 — deployed separately on `feature/postgresql`.**
 
 The original application passed all 21 automated tests, and its dependencies and dashboard were verified in a fresh virtual environment. The public demo is available online with temporary session-specific storage.
 
