@@ -88,13 +88,23 @@ st.markdown("""
     border: 2px solid #10D99A
 }
 .st-key-delete_expense_card {
-    border: 2px solid #EF4444
+    border: 2px solid #EF4444;
+    min-height: 295px;
+    display: flex;
+    flex-direction: column;
+}
+.st-key-delete_expense_card > div:nth-child(2) {
+    margin-top: auto;
+}
+
+.st-key-delete_expense_card > div:nth-child(3) {
+    margin-bottom: auto;
 }
 .st-key-category_chart_card {
     border: 2px solid #F59E0B;
     margin-top: 20px;
     padding: 25px;
-    min-height: 500px
+    min-height: auto;
 }
 .st-key-expenses_table_card {
     border: 2px solid #A855F7;
@@ -144,9 +154,6 @@ st.markdown("""
 .st-key-delete_expense_card [data-testid="stWidgetLabel"] p {
     color: #CBD5E1;
     font-weight: 500;
-}
-.st-key-category_chart_card [data-testid="stPlotlyChart"] {
-    margin-top: 25px;
 }
 .st-key-save_budget {
     display: flex;

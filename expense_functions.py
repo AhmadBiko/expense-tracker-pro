@@ -111,7 +111,11 @@ def calculate_spending_by_month(expenses):
     monthly_list = {}
     for expense in expenses:
         if "date" in expense:
-            month = expense["date"][:7]
+            expense_date = expense["date"]
+            if isinstance(expense_date, str):
+                month = expense_date[:7]
+            else:
+                month = expense_date.strftime("%Y-%m")
             if month in monthly_list:
                 monthly_list[month] += expense["amount"]
             else:
