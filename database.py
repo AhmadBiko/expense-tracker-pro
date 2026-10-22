@@ -4,6 +4,7 @@ import os
 
 def get_connection():
     database_url = os.getenv("DATABASE_URL")
+
     if database_url:
         return psycopg.connect(database_url)
     else:
@@ -26,13 +27,19 @@ def get_expenses(user_id):
             rows = cursor.fetchall()
     return rows
 
-def add_expense_db(user_id,category, amount, description, date):
+def add_expense_db(user_id, category, amount, description, date):
     with get_connection() as connection:
         with connection.cursor() as cursor:
-            cursor.execute('INSERT INTO expenses(user_id, category, amount, description, date) VALUES(%s,%s,%s,%s,%s) RETURNING id;'
-            ,(user_id, category, amount, description, date))
-            id = cursor.fetchone()
-        return id[0]
+            cursor.execute(
+                """
+                INSERT INTO expenses(user_id, category, amount, description, date)
+                VALUES (%s, %s, %s, %s, %s)
+                RETURNING id;
+                """,
+                (user_id, category, amount, description, date)
+            )
+            expense_id = cursor.fetchone()[0]
+    return expense_id
             
 def update_expense_db(user_id, expense_id, new_amount):
     with get_connection() as connection:

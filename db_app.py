@@ -19,6 +19,7 @@ from expense_functions import (
     calculate_spending_by_month
 )
 
+
 #[2] Improving the app with wide layout
 st.set_page_config(
     layout="wide"
