@@ -1,143 +1,170 @@
 # 💰 Expense Tracker Pro
 
-A personal expense tracking application built with **Python, Streamlit, and Plotly**.
+**A Python personal finance dashboard — from a command-line project to a cloud-hosted, multi-user web application.**
 
-Expense Tracker Pro helps users record expenses, visualize spending habits, manage a monthly budget, and explore their spending history through an interactive dashboard.
+Record expenses, track monthly budgets, and explore spending through interactive charts. The project has two live versions:
 
-**🌐 [Try the Live Demo](https://expense-tracker-pro-2026.streamlit.app/)**
+| Version | Demo | Data storage |
+| --- | --- | --- |
+| **V2 — PostgreSQL + Google login** | [Launch V2](https://expense-tracker-pro-v2.streamlit.app/) | Persistent, per-user data in Neon PostgreSQL |
+| **V1 — Public demo** | [Try V1](https://expense-tracker-pro-2026.streamlit.app/) | Temporary, session-specific data |
 
-The public demo runs with temporary, session-specific data. Expenses and budgets are not permanently stored; use the local application for JSON persistence.
-
-The project started as a Python command-line application and has evolved into a web-based dashboard. It was developed as a hands-on learning project to practice Python programming, data handling, testing, and web application development.
-
-## 📸 Dashboard Preview
-
-### Main Dashboard
-![Expense Tracker Pro Dashboard](./screenshots/dashboard.png)
-
-### Monthly Spending History
-![Monthly Spending History](./screenshots/spending-history.png)
+> **Current development branch:** `feature/postgresql` contains the V2 app (`db_app.py`). The original JSON and public-demo applications are retained in the repository.
 
 ## ✨ Features
 
-### Interactive Dashboard
-- Dark-themed Streamlit interface
-- Total spending and expense summary metrics
-- Spending breakdown by category using a donut chart
-- Monthly spending history using an interactive bar chart
-- Expense table with newest transactions displayed first
+### V2 — Multi-user expense tracker
 
-### Expense Management
-- Add expenses with a category, amount, and description
-- Automatically record the expense date
-- Delete existing expenses
-- Validate user input
-- Save and load expenses locally using JSON (`app.py`)
-- Try a separate public demo with temporary session-specific data (`demo_app.py`)
+- **Google sign-in and sign-out** using Streamlit's authentication support
+- **User-specific data:** expenses and monthly budgets linked to each authenticated user
+- **Persistent PostgreSQL storage** hosted with Neon
+- **Expense management:** add, browse, and delete expenses with input validation
+- **Monthly budgets:** save a budget and compare it with monthly spending
+- **Interactive analytics:** spending by category, monthly history, and dashboard summaries
+- **Dark-themed, wide-layout Streamlit dashboard**
 
-### Monthly Budget
-- Set and save a monthly spending budget
-- Track spending for the current month
-- Visualize budget usage with a progress indicator
-- Compare monthly spending against the selected budget
+### V1 — Original learning project
 
-### Data Analysis
-- Calculate total spending
-- Calculate spending by category
-- Identify the most expensive expense
-- Group expenses by month
-- Handle older expense records without dates
+- Command-line expense tracker, later expanded into a Streamlit dashboard
+- Local JSON persistence (`app.py`)
+- Temporary session-based public demo (`demo_app.py`)
+- Expense calculations, monthly summaries, and budget tracking
+- Automated unit tests for core expense-tracking functionality
+
+## 📸 Dashboard Preview
+
+The screenshots below show the original dashboard (V1).
+
+### Main dashboard
+
+![Expense Tracker Pro dashboard](./screenshots/dashboard.png)
+
+### Monthly spending history
+
+![Monthly spending history](./screenshots/spending-history.png)
 
 ## 🛠️ Tech Stack
 
 | Technology | Purpose |
-|---|---|
-| Python | Application logic and data processing |
-| Streamlit | Interactive web dashboard |
-| Plotly | Spending charts and visualizations |
-| JSON | Local data persistence in the original application |
-| Streamlit Session State | Temporary, per-session data in the public demo |
-| unittest | Automated testing |
+| --- | --- |
+| Python | Application and business logic |
+| Streamlit | Interactive web interface and Google login integration |
+| PostgreSQL | Persistent relational storage for V2 |
+| Neon | Hosted PostgreSQL database |
+| Psycopg 3 | Parameterized SQL and PostgreSQL connectivity |
+| Plotly | Interactive spending visualizations |
+| JSON | Local persistence in the original V1 application |
+| `unittest` | Automated tests for core application logic |
 | Git & GitHub | Version control |
 
 ## 🚀 Getting Started
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/AhmadBiko/expense-tracker-pro.git
 cd expense-tracker-pro
 ```
 
-### 2. Create a Virtual Environment
+To work with the V2 code, check out its branch:
+
+```bash
+git switch feature/postgresql
+```
+
+### 2. Install dependencies
 
 ```bash
 python -m venv .venv
 ```
 
-Activate it on Windows PowerShell:
+Activate the virtual environment:
+
+**Windows PowerShell**
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
-Or on macOS/Linux:
+**macOS / Linux**
 
 ```bash
 source .venv/bin/activate
 ```
 
-### 3. Install Dependencies
+Then install:
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### 4. Run the Web Application
+### 3. Run V1 locally
+
+For the original JSON-based Streamlit app:
 
 ```bash
 streamlit run app.py
 ```
 
-Streamlit will display a local URL, typically:
-
-`http://localhost:8501`
-
-To run the public-demo version locally instead:
+For the session-based public demo:
 
 ```bash
 streamlit run demo_app.py
 ```
 
-### 5. Run the Command-Line Version (Optional)
+For the command-line version:
 
 ```bash
 python main.py
 ```
 
-## 🧪 Automated Testing
+### 4. Run V2 locally
 
-The project includes **21 automated unit tests** covering expense calculations, validation, data manipulation, and persistence-related functionality.
+V2 requires a compatible PostgreSQL database with the `users`, `expenses`, and `budgets` tables, plus configured Google OAuth authentication.
 
-Run all tests with:
+Set the `DATABASE_URL` environment variable to your own PostgreSQL connection URL. For example, in **PowerShell**:
+
+```powershell
+$env:DATABASE_URL = Read-Host "PostgreSQL connection URL"
+```
+
+Configure Google OAuth credentials in your **local, Git-ignored** `.streamlit/secrets.toml` according to [Streamlit's authentication documentation](https://docs.streamlit.io/develop/concepts/connections/authentication). Register a redirect URI corresponding to your local Streamlit address (for example, `http://localhost:8502/oauth2callback` when using port 8502).
+
+Start V2:
+
+```powershell
+streamlit run db_app.py --server.port 8502
+```
+
+Never commit database URLs, passwords, OAuth client secrets, or your local `.streamlit/secrets.toml`.
+
+> The cloud-hosted V2 demo is the easiest way to try the application without setting up your own database or OAuth client.
+
+## 🧪 Testing
+
+The original application includes **21 automated unit tests** for expense calculations, validation, data manipulation, and persistence-related behavior.
+
+Run them with:
 
 ```bash
 python -m unittest -v
 ```
 
-Latest local test result:
+**Previously verified V1 result:** 21 tests passed.
 
-**21 tests passed.**
+**V2 manual smoke testing:** Google login/logout, creating and deleting an expense, updating dashboard totals and charts, saving budgets, and signing back in. Separate Google accounts were also tested for data isolation. These manual checks are not a substitute for automated end-to-end or security tests.
 
 ## 📁 Project Structure
 
 ```text
 expense-tracker-pro/
-├── app.py
-├── demo_app.py
-├── main.py
-├── expense_functions.py
-├── test_expense_tracker.py
+├── app.py                  # V1: local JSON dashboard
+├── demo_app.py             # V1: temporary session-based demo
+├── db_app.py               # V2: authenticated PostgreSQL dashboard
+├── database.py             # V2: PostgreSQL operations
+├── main.py                 # Command-line app
+├── expense_functions.py    # Shared expense calculations
+├── test_expense_tracker.py # Core unit tests
 ├── requirements.txt
 ├── screenshots/
 │   ├── dashboard.png
@@ -146,49 +173,43 @@ expense-tracker-pro/
 └── README.md
 ```
 
-- `app.py` — Original Streamlit dashboard with local JSON persistence
-- `demo_app.py` — Public Streamlit demo with session-based temporary storage
-- `main.py` — Command-line interface
-- `expense_functions.py` — Core expense and budget functions
-- `test_expense_tracker.py` — Automated unit tests
+## 🔐 Data Isolation & Security
 
-The original application stores expense and budget data in local JSON files. These files are excluded from Git tracking to avoid accidentally publishing personal financial information. The public demo does not save expenses or budgets to those files; data is temporary and tied to a visitor's Streamlit session.
+V2 identifies users through Google authentication and associates stored expenses and budgets with an internal user ID. Database queries use parameterized SQL, and user-owned operations filter records by that user ID.
 
-## 🗺️ Development Roadmap
+The application keeps credentials outside tracked source files. A Git history scan with Gitleaks reported no detected leaks at the time of the release review. This is not a guarantee against every possible security issue.
 
-- [x] Build a command-line expense tracker
-- [x] Implement JSON data persistence
-- [x] Add input validation and error handling
-- [x] Implement automated unit tests
-- [x] Build a Streamlit dashboard
-- [x] Create spending charts with Plotly
-- [x] Add monthly budget tracking
-- [x] Add monthly spending history
-- [x] Add dates and chronological expense sorting
-- [x] Add dashboard screenshots
-- [x] Test installation in a clean environment
-- [ ] Explore SQLite database integration
-- [x] Deploy a public session-based web demo
-- [ ] Add persistent, private multi-user storage and authentication
+## 🗺️ Development Journey
+
+- [x] Build a Python command-line expense tracker
+- [x] Add JSON persistence and input validation
+- [x] Implement unit tests
+- [x] Build a Streamlit dashboard with Plotly charts
+- [x] Add budgets, spending history, and dashboard screenshots
+- [x] Deploy a temporary-data public demo (V1)
+- [x] Integrate PostgreSQL via Psycopg 3 (V2)
+- [x] Add Google authentication and per-user data separation (V2)
+- [x] Deploy V2 with Neon and Streamlit Community Cloud
+- [ ] Future improvement: connection pooling and dashboard performance
+- [ ] Future improvement: expanded automated integration/security tests
 
 ## 📌 Project Status
 
-**Version 1.0.0 — released. Public demo deployed.**
+**V1:** Released as an original JSON-based application and public session demo.
 
-The original application passed all 21 automated tests, and its dependencies and dashboard were verified in a fresh virtual environment. The public demo is available online with temporary session-specific storage.
+**V2:** Deployed and manually tested on the `feature/postgresql` branch. Future performance improvements and additional tests are planned.
 
-[Open live demo](https://expense-tracker-pro-2026.streamlit.app/)
-
-[View releases](https://github.com/AhmadBiko/expense-tracker-pro/releases)
+- [V2 live application](https://expense-tracker-pro-v2.streamlit.app/)
+- [V1 live demo](https://expense-tracker-pro-2026.streamlit.app/)
+- [Repository releases](https://github.com/AhmadBiko/expense-tracker-pro/releases)
 
 ## 👨‍💻 Author
 
-**Ahmad Biko**
-
+**Ahmad Biko**  
 Computer Engineering Student — HTW Berlin
 
-[GitHub Profile](https://github.com/AhmadBiko)
+[GitHub profile](https://github.com/AhmadBiko)
 
 ---
 
-*Built as a practical Python development and software engineering learning project.*
+*Built as a practical project to learn Python, databases, authentication, testing, and web application development.*
